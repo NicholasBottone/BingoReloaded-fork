@@ -133,9 +133,13 @@ public class BingoGame implements Listener {
         new Message("game.end.time").sendAll();
         // Send results to all players
         for (BingoTeam team : getTeamManager().getActiveTeams()) {
-            players.forEach(p -> p.sendMessage(team.getColor() + team.getName() + ChatColor.WHITE + ": "
+            if (team.card == null)
+                continue;
+
+            String name = FlexibleColor.fromName(team.getName()).getTranslation();
+            players.forEach(p -> p.sendMessage(team.getColor() + name + ChatColor.WHITE + ": "
                     + team.card.getCompleteCount(team)));
-            Message.log(team.getName() + ": " + team.card.getCompleteCount(team));
+            Message.log(name + ": " + team.card.getCompleteCount(team));
         }
 
         RecoveryCardData.markCardEnded(true);
