@@ -3,6 +3,7 @@ package io.github.steaf23.bingoreloaded;
 import io.github.steaf23.bingoreloaded.data.BingoCardsData;
 import io.github.steaf23.bingoreloaded.data.ConfigData;
 import io.github.steaf23.bingoreloaded.data.RecoveryCardData;
+import io.github.steaf23.bingoreloaded.data.YmlDataManager;
 import io.github.steaf23.bingoreloaded.gui.EffectOptionFlags;
 import io.github.steaf23.bingoreloaded.gui.cards.BingoCard;
 import io.github.steaf23.bingoreloaded.gui.cards.CardBuilder;
@@ -46,6 +47,8 @@ public class BingoGame implements Listener {
     private BingoGameSettings settings;
     private final Map<UUID, Location> deadPlayers;
     private static final int TELEPORT_DISTANCE = ConfigData.getConfig().teleportMaxDistance;
+
+    private static final YmlDataManager teamsFile = new YmlDataManager("teams.yml");
 
     public BingoGame() {
         this.inProgress = false;
@@ -526,6 +529,16 @@ public class BingoGame implements Listener {
             getTeamManager().addPlayerToTeam(event.getPlayer(), team.getName());
             scoreboard.updateItemCount();
             scoreboard.updateItemCount();
+        } else {
+            // Get player's team from teams.yml
+            teamsFile.getConfig().getKeys(false).forEach(teamName -> {
+                if (teamsFile.getConfig().getStringList(teamName)
+                        .contains(event.getPlayer().getName())) {
+                    getTeamManager().addPlayerToTeam(event.getPlayer(), teamName);
+                    scoreboard.updateItemCount();
+                    return;
+                }
+            });
         }
     }
 
