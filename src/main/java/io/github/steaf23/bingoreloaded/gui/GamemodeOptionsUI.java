@@ -12,16 +12,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class GamemodeOptionsUI extends AbstractGUIInventory
-{
+public class GamemodeOptionsUI extends AbstractGUIInventory {
     private final BingoGame game;
     private final InventoryItem[] options;
 
-    public GamemodeOptionsUI(AbstractGUIInventory parent, BingoGame game)
-    {
+    public GamemodeOptionsUI(AbstractGUIInventory parent, BingoGame game) {
         super(45, TranslationData.itemName("menu.options.mode"), parent);
         this.game = game;
-        options = new InventoryItem[]{
+        options = new InventoryItem[] {
                 new InventoryItem(GUIBuilder5x9.OptionPositions.SIX_CENTER1.positions[0],
                         Material.LIME_CONCRETE, TITLE_PREFIX + "Regular 5x5"),
                 new InventoryItem(GUIBuilder5x9.OptionPositions.SIX_CENTER1.positions[1],
@@ -39,33 +37,26 @@ public class GamemodeOptionsUI extends AbstractGUIInventory
     }
 
     @Override
-    public void delegateClick(InventoryClickEvent event, int slotClicked, Player player, ClickType clickType)
-    {
+    public void delegateClick(InventoryClickEvent event, int slotClicked, Player player, ClickType clickType) {
         BingoGamemode chosenMode = BingoGamemode.REGULAR;
         CardSize chosenSize = CardSize.X5;
 
-        if (slotClicked == options[0].getSlot() || slotClicked == options[3].getSlot())
-        {
+        if (slotClicked == options[0].getSlot() || slotClicked == options[3].getSlot()) {
             new Message("game.settings.regular_selected").color(ChatColor.GOLD).sendAll();
-        }
-        else if (slotClicked == options[1].getSlot() || slotClicked == options[4].getSlot())
-        {
+        } else if (slotClicked == options[1].getSlot() || slotClicked == options[4].getSlot()) {
             new Message("game.settings.lockout_selected").color(ChatColor.GOLD).sendAll();
 
             chosenMode = BingoGamemode.LOCKOUT;
-        }
-        else if (slotClicked == options[2].getSlot() || slotClicked == options[5].getSlot())
-        {
-            new Message("game.settings.lockout_selected").color(ChatColor.GOLD).sendAll();
+        } else if (slotClicked == options[2].getSlot() || slotClicked == options[5].getSlot()) {
+            new Message("game.settings.complete_selected").color(ChatColor.GOLD).sendAll();
             chosenMode = BingoGamemode.COMPLETE;
         }
 
-        if (slotClicked == options[0].getSlot() || slotClicked == options[1].getSlot() || slotClicked == options[2].getSlot())
-        {
+        if (slotClicked == options[0].getSlot() || slotClicked == options[1].getSlot()
+                || slotClicked == options[2].getSlot()) {
             new Message("game.settings.cardsize").color(ChatColor.GOLD).arg("5x5").sendAll();
-        }
-        else if (slotClicked == options[3].getSlot() || slotClicked == options[4].getSlot() || slotClicked == options[5].getSlot())
-        {
+        } else if (slotClicked == options[3].getSlot() || slotClicked == options[4].getSlot()
+                || slotClicked == options[5].getSlot()) {
             new Message("game.settings.cardsize").color(ChatColor.GOLD).arg("3x3").sendAll();
             chosenSize = CardSize.X3;
         }

@@ -29,7 +29,8 @@ game:
     no_card: "Cannot start game with the card '{0}' because it does not exist!" # 0: card_name
   end:
     bingo: "Congratulations! Team {0} has won the Bingo!" # 0: winning team
-    duration: "&b&lGame Duration: {0}" # 0: total game time
+    time: "&a&o&lTime's up! The bingo game has ended! Let's see how everyone did!"
+    duration: "&b&lGame Duration: {0} / {1}" # 0: total game time
     restart:
       prefix: "&a&o&lGame has ended! Click to "
       hoverable: "&c&oRestart!"

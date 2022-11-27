@@ -4,6 +4,10 @@
 # 3) RESTORE SETTINGS ACCORDING TO THE BACKUP FILE.
 # 4) RELOAD PLUGIN AND THAT'S IT
 
+# The maximum game time in seconds, after which the game will end.
+# Default: 600 (10 minutes)
+maxGameTime: 600
+
 # When the game starts everyone will be teleported in a random square radius
 #   between 0 and teleportMaxDistance blocks from 0,0. (no more than 1.000.000 blocks)
 teleportMaxDistance: 1000000

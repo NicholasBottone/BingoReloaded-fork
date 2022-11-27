@@ -27,3 +27,5 @@ hs_err_pid*
 
 /target
 .idea/misc.xml
+.DS_Store
+.vscode/

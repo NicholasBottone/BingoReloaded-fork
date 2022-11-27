@@ -18,67 +18,57 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BingoScoreboard
-{
+public class BingoScoreboard {
     private final Scoreboard itemCountBoard;
     private final TeamManager teamManager;
 
-    public BingoScoreboard(BingoGame game)
-    {
+    public BingoScoreboard(BingoGame game) {
         this.itemCountBoard = Bukkit.getScoreboardManager().getNewScoreboard();
         this.teamManager = new TeamManager(game, itemCountBoard);
 
-        Objective itemObjective = itemCountBoard.registerNewObjective("item_count", "bingo_item_count", TranslationData.translate("menu.completed"));
+        Objective itemObjective = itemCountBoard.registerNewObjective("item_count", "bingo_item_count",
+                TranslationData.translate("menu.completed"));
         itemObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         resetBoards();
     }
 
-    public void updateItemCount()
-    {
+    public void updateItemCount() {
         Objective objective = itemCountBoard.getObjective("item_count");
         if (objective == null)
             return;
 
-        for (BingoTeam t : teamManager.getActiveTeams())
-        {
-            if (t.card != null)
-            {
+        for (BingoTeam t : teamManager.getActiveTeams()) {
+            if (t.card != null) {
                 objective.getScore("" + t.getColor()).setScore(t.card.getCompleteCount(t));
             }
         }
 
-        for (Player p : teamManager.getParticipants())
-        {
+        for (Player p : teamManager.getParticipants()) {
             p.setScoreboard(itemCountBoard);
         }
     }
 
-    public void updateGameTime(GameTimer timer)
-    {
-        for (Player player : teamManager.getParticipants())
-        {
+    public void updateGameTime(GameTimer timer) {
+        for (Player player : teamManager.getParticipants()) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(new Message("game.end.duration")
                     .arg(GameTimer.getTimeAsString(timer.getTime()))
+                    .arg(GameTimer.getTimeAsString(timer.getDuration()))
                     .toLegacyString()));
         }
     }
 
-    public void resetBoards()
-    {
-        for (String entry : itemCountBoard.getEntries())
-        {
+    public void resetBoards() {
+        for (String entry : itemCountBoard.getEntries()) {
             itemCountBoard.resetScores(entry);
         }
 
-        for (Player p : teamManager.getParticipants())
-        {
+        for (Player p : teamManager.getParticipants()) {
             p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         }
     }
 
-    public TeamManager getTeamManager()
-    {
+    public TeamManager getTeamManager() {
         return teamManager;
     }
 }

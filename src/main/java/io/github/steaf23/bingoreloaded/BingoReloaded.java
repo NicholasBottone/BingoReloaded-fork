@@ -19,9 +19,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class BingoReloaded extends JavaPlugin
-{
-    public static final String NAME = "BingoReloaded";
+public class BingoReloaded extends JavaPlugin {
+    public static final String NAME = "NickBingoTourney";
 
     // Amount of ticks per second.
     public static final int ONE_SECOND = 20;
@@ -29,8 +28,7 @@ public class BingoReloaded extends JavaPlugin
     public static boolean usesPlaceholder = false;
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         usesPlaceholder = Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null;
 
         BingoGame game = new BingoGame();
@@ -38,10 +36,9 @@ public class BingoReloaded extends JavaPlugin
         UIManager.getUIManager();
 
         PluginCommand bingoCommand = getCommand("bingo");
-        if (bingoCommand != null)
-        {
+        if (bingoCommand != null) {
             bingoCommand.setExecutor(new BingoCommand(game));
-            bingoCommand.setTabCompleter( new BingoTabCompleter());
+            bingoCommand.setTabCompleter(new BingoTabCompleter());
         }
 
         PluginCommand cardCommand = getCommand("card");
@@ -56,8 +53,7 @@ public class BingoReloaded extends JavaPlugin
         if (teamChatCommand != null)
             teamChatCommand.setExecutor(new TeamChat(game.getTeamManager()));
 
-        if (RecoveryCardData.loadCards(game))
-        {
+        if (RecoveryCardData.loadCards(game)) {
             game.resume();
         }
 
@@ -66,13 +62,11 @@ public class BingoReloaded extends JavaPlugin
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         Bukkit.getLogger().info(ChatColor.RED + "Disabled " + this.getName());
     }
 
-    public static void registerListener(Listener listener)
-    {
+    public static void registerListener(Listener listener) {
         Plugin plugin = Bukkit.getPluginManager().getPlugin(BingoReloaded.NAME);
         Bukkit.getPluginManager().registerEvents(listener, plugin);
     }

@@ -13,78 +13,76 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class BingoCommand implements CommandExecutor
-{
+public class BingoCommand implements CommandExecutor {
     private final BingoGame gameInstance;
 
-    public BingoCommand(BingoGame game)
-    {
+    public BingoCommand(BingoGame game) {
         gameInstance = game;
     }
 
     @Override
-    public boolean onCommand(@NonNull CommandSender commandSender, @NonNull Command command, @NonNull String s, String[] args)
-    {
-        if (args.length > 0)
-        {
-            switch (args[0])
-            {
+    public boolean onCommand(@NonNull CommandSender commandSender, @NonNull Command command, @NonNull String s,
+            String[] args) {
+        Player player;
+        if (commandSender instanceof Player)
+            player = (Player) commandSender;
+        else {
+            Message.log("Only players can use this command!");
+            return true;
+        }
+
+        if (args.length > 0) {
+            switch (args[0]) {
                 case "join":
-                    if (!(commandSender instanceof Player player && player.hasPermission("bingo.player"))) return false;
+                    if (!(player.hasPermission("bingo.player")))
+                        return false;
 
                     gameInstance.getTeamManager().openTeamSelector(player, null);
                     break;
                 case "leave":
-                    if (!(commandSender instanceof Player player && player.hasPermission("bingo.player"))) return false;
+                    if (!(player.hasPermission("bingo.player")))
+                        return false;
 
                     gameInstance.playerQuit(player);
                     break;
 
                 case "start":
-                    if (commandSender instanceof Player p && p.hasPermission("bingo.settings"))
-                    {
+                    if (player.hasPermission("bingo.settings")) {
                         gameInstance.start();
                         return true;
                     }
                     break;
 
                 case "end":
-                    if (!(commandSender instanceof Player p) || p.hasPermission("bingo.settings"))
-                    gameInstance.end();
+                    if (player.hasPermission("bingo.settings"))
+                        gameInstance.end();
                     break;
 
                 case "getcard":
-                    if (commandSender instanceof Player p && p.hasPermission("bingo.player"))
-                    {
-                        gameInstance.returnCardToPlayer(p);
+                    if (player.hasPermission("bingo.player")) {
+                        gameInstance.returnCardToPlayer(player);
                         return true;
                     }
                     break;
 
                 case "back":
-                    if (commandSender instanceof Player p && p.hasPermission("bingo.player"))
-                    {
-                        if (ConfigData.getConfig().teleportAfterDeath)
-                        {
-                            gameInstance.teleportPlayerAfterDeath(p);
+                    if (player.hasPermission("bingo.player")) {
+                        if (ConfigData.getConfig().teleportAfterDeath) {
+                            gameInstance.teleportPlayerAfterDeath(player);
                             return true;
                         }
                     }
                     break;
 
                 case "deathmatch":
-                    if (commandSender instanceof Player p && !p.hasPermission("bingo.settings"))
-                    {
+                    if (!player.hasPermission("bingo.settings")) {
                         return false;
                     }
 
-                    if (gameInstance.inProgress)
-                    {
+                    if (gameInstance.inProgress) {
                         gameInstance.startDeathMatch(3);
                         return true;
-                    }
-                    else
-                    {
+                    } else {
                         if (commandSender instanceof Player p)
                             new Message("command.bingo.no_deathmatch").color(ChatColor.RED).send(p);
                         else
@@ -93,27 +91,23 @@ public class BingoCommand implements CommandExecutor
                     break;
 
                 case "creator":
-                    if (commandSender instanceof Player p && p.hasPermission("bingo.manager"))
-                    {
+                    if (player.hasPermission("bingo.manager")) {
                         CardCreatorUI creatorUI = new CardCreatorUI(null);
-                        creatorUI.open(p);
+                        creatorUI.open(player);
                     }
                     break;
 
                 default:
                     if (commandSender instanceof Player p)
-                        new Message("command.use").color(ChatColor.RED).arg("/bingo [getcard | start | end | join | back | leave | deathmatch | creator]").send(p);
+                        new Message("command.use").color(ChatColor.RED)
+                                .arg("/bingo [getcard | start | end | join | back | leave | deathmatch | creator]")
+                                .send(p);
                     else
                         Message.log(ChatColor.RED + "Usage: /bingo [start | end | deathmatch]");
                     break;
             }
-        }
-        else
-        {
-            if (commandSender instanceof Player player)
-            {
-                BingoOptionsUI.open(player, gameInstance);
-            }
+        } else {
+            BingoOptionsUI.open(player, gameInstance);
         }
         return false;
     }

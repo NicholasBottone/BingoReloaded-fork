@@ -8,10 +8,8 @@ import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 
-public class ConfigData
-{
-    public enum PlayerTeleportStrategy
-    {
+public class ConfigData {
+    public enum PlayerTeleportStrategy {
         ALONE("alone"),
         TEAM("team"),
         ALL("all"),
@@ -19,25 +17,23 @@ public class ConfigData
 
         public final String name;
 
-        PlayerTeleportStrategy(String name)
-        {
+        PlayerTeleportStrategy(String name) {
             this.name = name;
         }
 
-        static PlayerTeleportStrategy fromName(@Nullable String name)
-        {
+        static PlayerTeleportStrategy fromName(@Nullable String name) {
             if (name == null)
                 return ALL;
-            return switch (name.toLowerCase())
-                    {
-                        case "alone" -> ALONE;
-                        case "team" -> TEAM;
-                        case "all" -> ALL;
-                        default -> NONE;
-                    };
+            return switch (name.toLowerCase()) {
+                case "alone" -> ALONE;
+                case "team" -> TEAM;
+                case "all" -> ALL;
+                default -> NONE;
+            };
         }
     }
 
+    public final int maxGameTime;
     public final int teleportMaxDistance;
     public final PlayerTeleportStrategy playerTeleportStrategy;
     public final boolean teleportAfterDeath;
@@ -55,10 +51,8 @@ public class ConfigData
 
     private static ConfigData INSTANCE;
 
-    public static ConfigData getConfig()
-    {
-        if (INSTANCE == null)
-        {
+    public static ConfigData getConfig() {
+        if (INSTANCE == null) {
             Plugin plugin = Bukkit.getPluginManager().getPlugin(BingoReloaded.NAME);
             plugin.saveDefaultConfig();
             plugin.reloadConfig();
@@ -67,10 +61,11 @@ public class ConfigData
         return INSTANCE;
     }
 
-    private ConfigData(FileConfiguration config)
-    {
+    private ConfigData(FileConfiguration config) {
+        this.maxGameTime = config.getInt("maxGameTime", 600);
         this.teleportMaxDistance = config.getInt("teleportMaxDistance", 1000000);
-        this.playerTeleportStrategy = PlayerTeleportStrategy.fromName(config.getString("playerTeleportStrategy", "ALL"));
+        this.playerTeleportStrategy = PlayerTeleportStrategy
+                .fromName(config.getString("playerTeleportStrategy", "ALL"));
         this.teleportAfterDeath = config.getBoolean("teleportBackAfterDeathMessage", true);
         this.lobbySpawnHeight = config.getInt("lobbySpawnHeight", 128);
         this.wandUp = config.getInt("GoUpWand.upDistance", 75);

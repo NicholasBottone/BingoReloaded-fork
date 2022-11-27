@@ -11,25 +11,20 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-public class CardCommand implements CommandExecutor
-{
+public class CardCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NonNull CommandSender commandSender, @NonNull Command command, @NonNull String name, String[] args)
-    {
-        if (commandSender instanceof Player p && !p.hasPermission("bingo.manager"))
-        {
+    public boolean onCommand(@NonNull CommandSender commandSender, @NonNull Command command, @NonNull String name,
+            String[] args) {
+        if (commandSender instanceof Player p && !p.hasPermission("bingo.manager")) {
             return false;
         }
 
-        if (args.length > 0)
-        {
-            switch (args[0])
-            {
+        if (args.length > 0) {
+            switch (args[0]) {
                 case "create":
                     if (!(commandSender instanceof Player p))
                         break;
-                    if (args.length < 2)
-                    {
+                    if (args.length < 2) {
                         new Message("command.card.no_name").arg("/card create <card_name>").send(p);
                         break;
                     }
@@ -38,24 +33,19 @@ public class CardCommand implements CommandExecutor
                     break;
 
                 case "remove":
-                    if (commandSender instanceof Player p)
-                    {
-                        if (args.length < 2)
-                        {
-                            new Message("command.card.no_name").arg("/card remove <card_name>").send(p);
+                    if (commandSender instanceof Player p2) {
+                        if (args.length < 2) {
+                            new Message("command.card.no_name").arg("/card remove <card_name>").send(p2);
                             break;
                         }
 
                         if (BingoCardsData.removeCard(args[1]))
-                            new Message("command.card.removed").arg(args[1]).send(p);
+                            new Message("command.card.removed").arg(args[1]).send(p2);
                         else
-                            new Message("command.card.no_remove").arg(args[1]).send(p);
+                            new Message("command.card.no_remove").arg(args[1]).send(p2);
                         break;
-                    }
-                    else if (commandSender instanceof ConsoleCommandSender)
-                    {
-                        if (args.length < 2)
-                        {
+                    } else if (commandSender instanceof ConsoleCommandSender) {
+                        if (args.length < 2) {
                             Message.log(ChatColor.RED + "Please provide card name: /card remove <card_name>");
                             break;
                         }
@@ -79,8 +69,7 @@ public class CardCommand implements CommandExecutor
         return false;
     }
 
-    public static void editCard(String cardName, Player player)
-    {
+    public static void editCard(String cardName, Player player) {
         CardEditorUI cardEditor = new CardEditorUI(cardName, null);
         cardEditor.open(player);
     }

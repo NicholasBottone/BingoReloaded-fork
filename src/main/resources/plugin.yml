@@ -1,4 +1,4 @@
-name: BingoReloaded # the plugins name as it should appear in the plugin list /pl
+name: NickBingoTourney # the plugins name as it should appear in the plugin list /pl
 version: 1.4.0 # the plugin's version
 author: Steven
 main: io.github.steaf23.bingoreloaded.BingoReloaded
@@ -25,11 +25,11 @@ commands:
   card:
     permission: bingo.manager
     description: Used to edit and create cards containing itemlists where each list as it's own frequency.
-    permission-message: §CYou don't have permission to use this command, you need to be atleast a bingo manager!
+    permission-message: §CYou don't have permission to use this command, you need to be at least a bingo manager!
   itemlist:
     permission: bingo.manager
     description: Used to edit and create lists containing items to be used in bingo cards.
-    permission-message: §CYou don't have permission to use this command, you need to be atleast a bingo manager!
+    permission-message: §CYou don't have permission to use this command, you need to be at least a bingo manager!
   btc:
     permission: bingo.player
     description: Used to toggle team chat when a game is active
